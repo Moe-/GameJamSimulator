@@ -1,7 +1,10 @@
 require('utils')
+require('world')
+
+gWorld = nil
 
 function love.load()
-
+  resetGame()
 end
 
 function love.update(dt)
@@ -13,7 +16,7 @@ function love.draw()
 end
 
 function resetGame()
-
+  gWorld = World:new(1280, 800)
 end
 
 function love.mousepressed(x, y, button)
