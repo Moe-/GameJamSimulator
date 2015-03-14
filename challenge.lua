@@ -1,6 +1,9 @@
 class "Challenge" {
 	posx = 0;
 	posy = 0;
+	energy = 20;
+	nextPlayer = 0;
+	fightIndex = 0;
 }
 
 function Challenge:__init(posx, posy)
@@ -83,10 +86,31 @@ function Challenge:drawBattle()
 	love.graphics.print(self.desc, px + 1, py + 1, 0, 1.25)
 	love.graphics.setColor(128, 128, 255, 255)
 	love.graphics.print(self.desc, px, py, 0, 1.25)
+	love.graphics.print("LP " .. self.energy, 30, 120, 0, 1.25)
 	love.graphics.setColor(255, 255, 255, 255)
 
 	--draw menu
 	love.graphics.print("Fight!!!", 200, 20)
+	
+	if self.fightIndex == 0 then
+		love.graphics.setColor(128, 128, 255, 255)
+	else
+		love.graphics.setColor(255, 255, 255, 255)
+	end
+	love.graphics.print("Attack!", 200, 240)
+	if self.fightIndex == 1 then
+		love.graphics.setColor(128, 128, 255, 255)
+	else
+		love.graphics.setColor(255, 255, 255, 255)
+	end
+	love.graphics.print("Magic!", 200, 260)
+	if self.fightIndex == 2 then
+		love.graphics.setColor(128, 128, 255, 255)
+	else
+		love.graphics.setColor(255, 255, 255, 255)
+	end
+	love.graphics.print("Skip!", 200, 280)
+	love.graphics.setColor(255, 255, 255, 255)
 end
 
 function Challenge:getPosition()
@@ -100,5 +124,16 @@ end
 function Challenge:keypressed(key)
 	if key == "f1" then
 		self.active = false
+	end
+end
+
+function Challenge:keyreleased(key)
+	if key == "w" then
+		self.fightIndex = self.fightIndex - 1
+		if self.fightIndex < 0 then self.fightIndex = 2 end
+	elseif key == "s" then
+		self.fightIndex = self.fightIndex + 1
+		if self.fightIndex > 2 then self.fightIndex = 0 end
+	elseif key == "return" then
 	end
 end

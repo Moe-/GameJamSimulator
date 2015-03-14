@@ -184,4 +184,7 @@ end
 
 function World:keyreleased(key)
   self.player:keyreleased(key)
+	if self.nextChallenge ~= nil then
+		self.challenges[self.nextChallenge]:keyreleased(key)
+	end
 end
