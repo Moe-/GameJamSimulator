@@ -13,6 +13,8 @@ class "World" {
   offsety = 0;
 	timeLimit = 15 * 60;
 	timeLeft = 0;
+	timeToSpawnNewChallenge = 15;
+	timeToSpwanNextChallenge = 0;
 }
 
 function World:__init(width, height)
@@ -26,6 +28,8 @@ function World:__init(width, height)
   self.curChallengeTime = 0
 	self.timeLeft = self.timeLimit
 	self.gameLost = false
+	self.gameWon = false
+	self.timeToSpwanNextChallenge = self.timeToSpawnNewChallenge
   for i = 1, self.challengeCount do
     self:genChallenge()
   end
@@ -39,7 +43,7 @@ function World:positionTakenByList(x, y, list)
 	for i, v in pairs(list) do
 		local cx, cy = v:getPosition()
 		local cw, ch = v:getSize()
-		if getDistance(x, y, cx, cy) < math.max(cw, ch) then
+		if getDistance(x, y, cx, cy) < getLength(cw, ch) then
 			return true
 		end
 	end
@@ -47,7 +51,7 @@ function World:positionTakenByList(x, y, list)
 end
 
 function World:positionTaken(x, y)
-	return (self:positionTakenByList(x, y, self.objects) or self:positionTakenByList(x, y, self.challenges))
+	return (self:positionTakenByList(x, y, self.objects) or self:positionTakenByList(x, y, self.challenges) or self:positionTakenByList(x, y, {self.player}))
 end
 
 function World:getUniquePosition()
@@ -110,10 +114,19 @@ function World:update(dt)
   end
 	
 	self.timeLeft = self.timeLeft - dt
-	if self.timeLeft <= 0 then
+	if self.timeLeft <= 0 and not self.gameWon then
 		self.gameLost = true
 	end
 	
+	if #self.challenges == 0 and not self.gameLost then
+		self.gameWon = true
+	end
+	
+	self.timeToSpwanNextChallenge = self.timeToSpwanNextChallenge - dt
+	if self.timeToSpwanNextChallenge < 0 then
+		self.timeToSpwanNextChallenge = self.timeToSpawnNewChallenge
+		self:genChallenge()
+	end
 end
 
 function World:draw()
@@ -123,20 +136,29 @@ function World:draw()
     self.background:draw(self.offsetx, self.offsety)
     self.player:draw(self.offsetx, self.offsety)
     
-    for i, v in pairs(self.challenges) do
-      v:draw(self.offsetx, self.offsety)
-    end
-		
 		for i, v in pairs(self.objects) do
 			v:draw(self.offsetx, self.offsety)
 		end
+		
+		for i, v in pairs(self.challenges) do
+      v:draw(self.offsetx, self.offsety)
+    end
 		--love.graphics.pop()
   else
     self.challenges[self.nextChallenge]:drawBattle()
   end
 	
+	love.graphics.push()
+	love.graphics.scale(1/gScale, 1/gScale)
 	if self.gameLost == true then
 		local outStr = "You failed creating a game!"
+		love.graphics.setColor(0, 0, 0, 255)
+		love.graphics.print(outStr, gScreenWidth/8 + 2, gScreenHeight/3 + 2, 0, 3.5)
+		love.graphics.setColor(255, 0, 0, 255)
+		love.graphics.print(outStr, gScreenWidth/8, gScreenHeight/3, 0, 3.5)
+		love.graphics.setColor(255, 255, 255, 255)
+	elseif self.gameWon == true then
+		local outStr = "You successfully made a game!"
 		love.graphics.setColor(0, 0, 0, 255)
 		love.graphics.print(outStr, gScreenWidth/8 + 2, gScreenHeight/3 + 2, 0, 3.5)
 		love.graphics.setColor(255, 0, 0, 255)
@@ -150,6 +172,7 @@ function World:draw()
 		love.graphics.print(outStr, 25, 25, 0, 2.5)
 		love.graphics.setColor(255, 255, 255, 255)
 	end
+	love.graphics.pop()
 end
 
 function World:keypressed(key)

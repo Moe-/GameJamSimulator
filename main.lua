@@ -46,6 +46,8 @@ end
 function love.keyreleased(key)
   if key == 'escape' then
 		love.event.quit()
+	elseif key == 'r' then
+		resetGame()
   end
   gWorld:keyreleased(key)
 end

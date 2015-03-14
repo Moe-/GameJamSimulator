@@ -10,6 +10,20 @@ function Challenge:__init(posx, posy)
 	self.quad = love.graphics.newQuad(0, 0, self.image:getWidth(), self.image:getHeight(), self.image:getWidth(), self.image:getHeight())
 	self.width = self.image:getWidth()
 	self.height = self.image:getHeight()
+	local rnd = math.random(1, 6)
+	if rnd == 1 then
+		self.desc = "Merge conflict!"
+	elseif rnd == 2 then
+		self.desc = "Application crash!"
+	elseif rnd == 3 then
+		self.desc = "Non-transparent background!"
+	elseif rnd == 4 then
+		self.desc = "Unlogical gameplay!"
+	elseif rnd == 5 then
+		self.desc = "Untriggered quest!"
+	else
+		self.desc = "Inverted colors!"
+	end
 	self.player = {}
 	self.player[1] = {}
 	self.player[1].x = 300
@@ -32,6 +46,13 @@ end
 
 function Challenge:draw(offsetx, offsety)
   love.graphics.draw(self.image, self.quad, self.posx - self.width / 2  + offsetx, self.posy - self.height / 2 + offsety)
+	local px = self.posx + self.width / 2 + offsetx - 8
+	local py = self.posy + offsety - 12
+	love.graphics.setColor(0, 0, 0, 255)
+	love.graphics.print(self.desc, px + 1, py + 1, 0, 1.25)
+	love.graphics.setColor(128, 128, 255, 255)
+	love.graphics.print(self.desc, px, py, 0, 1.25)
+	love.graphics.setColor(255, 255, 255, 255)
 end
 
 function Challenge:updateBattle(dt)
