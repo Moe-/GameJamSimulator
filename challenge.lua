@@ -11,10 +11,18 @@ function Challenge:__init(posx, posy)
 	self.width = self.image:getWidth()
 	self.height = self.image:getHeight()
 	self.player = {}
-	self.player[0] = {}
-	self.player[0].x = 600
-	self.player[0].y = 200
-	self.player[0].image = love.graphics.newImage("gfx/player.png")
+	self.player[1] = {}
+	self.player[1].x = 300
+	self.player[1].y = 100
+	self.player[1].image = love.graphics.newImage("gfx/marckus.png")
+	self.player[2] = {}
+	self.player[2].x = 300
+	self.player[2].y = 150
+	self.player[2].image = love.graphics.newImage("gfx/marckus.png")
+	self.player[3] = {}
+	self.player[3].x = 300
+	self.player[3].y = 200
+	self.player[3].image = love.graphics.newImage("gfx/marckus.png")
 	self.active = true
 end
 
@@ -31,8 +39,10 @@ function Challenge:updateBattle(dt)
 end
 
 function Challenge:drawBattle()
-	love.graphics.print("Challenge!!!", 200, 200)
-	love.graphics.draw(self.player[0].image, self.player[0].x, self.player[0].y)
+	love.graphics.print("Challenge!!!", 200, 20)
+	for i = 1, 3 do
+		love.graphics.draw(self.player[i].image, self.player[i].x, self.player[i].y)
+	end
 end
 
 function Challenge:getPosition()
