@@ -12,8 +12,9 @@ function Player:__init(posx, posy, mapWidth, mapHeight)
 	self.mapWidth = mapWidth
 	self.mapHeight = mapHeight
 	self.dead = false
-	self.image = love.graphics.newImage("gfx/player.png")
-	self.quad = love.graphics.newQuad(0, 0, 2048, 2048, self.image:getWidth(), self.image:getHeight())
+	--self.image = love.graphics.newImage("gfx/player.png")
+	self.image = love.graphics.newImage("gfx/marckus.png")
+	self.quad = love.graphics.newQuad(0, 0, self.image:getWidth(), self.image:getHeight(), self.image:getWidth(), self.image:getHeight())
 	self.width = self.image:getWidth()
 	self.height = self.image:getHeight()
 end
