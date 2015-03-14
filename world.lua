@@ -9,6 +9,8 @@ class "World" {
   challengeTime = 5;
   offsetx = 0;
   offsety = 0;
+	timeLimit = 15 * 60;
+	timeLeft = 0;
 }
 
 function World:__init(width, height)
@@ -19,6 +21,8 @@ function World:__init(width, height)
   self.challenges = {}
   self.nextChallenge = nil
   self.curChallengeTime = 0
+	self.timeLeft = self.timeLimit
+	self.gameLost = false
   for i = 1, self.challengeCount do
     self:genChallenge()
   end
@@ -64,6 +68,12 @@ function World:update(dt)
       self.nextChallenge = nil
 	end
   end
+	
+	self.timeLeft = self.timeLeft - dt
+	if self.timeLeft <= 0 then
+		self.gameLost = true
+	end
+	
 end
 
 function World:draw()
@@ -80,6 +90,22 @@ function World:draw()
   else
     self.challenges[self.nextChallenge]:drawBattle()
   end
+	
+	if self.gameLost == true then
+		local outStr = "You failed creating a game!"
+		love.graphics.setColor(0, 0, 0, 255)
+		love.graphics.print(outStr, gScreenWidth/8 + 2, gScreenHeight/3 + 2, 0, 3.5)
+		love.graphics.setColor(255, 0, 0, 255)
+		love.graphics.print(outStr, gScreenWidth/8, gScreenHeight/3, 0, 3.5)
+		love.graphics.setColor(255, 255, 255, 255)
+	else
+		local outStr = "Seconds left: " .. round(self.timeLeft, 0)
+		love.graphics.setColor(0, 0, 0, 255)
+		love.graphics.print(outStr, 27, 27, 0, 2.5)
+		love.graphics.setColor(255, 255, 0, 255)
+		love.graphics.print(outStr, 25, 25, 0, 2.5)
+		love.graphics.setColor(255, 255, 255, 255)
+	end
 end
 
 function World:keypressed(key)
