@@ -39,7 +39,7 @@ function World:positionTakenByList(x, y, list)
 	for i, v in pairs(list) do
 		local cx, cy = v:getPosition()
 		local cw, ch = v:getSize()
-		if getDistance(x, y, cx, cy) < 2 * math.max(cw, ch) then
+		if getDistance(x, y, cx, cy) < math.max(cw, ch) then
 			return true
 		end
 	end

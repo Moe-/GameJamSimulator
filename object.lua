@@ -6,9 +6,13 @@ class "Object" {
 function Object:__init(posx, posy)
 	self.posx = posx
 	self.posy = posy
-	
-	self.image = love.graphics.newImage("gfx/chair.png")
-  self.quad = love.graphics.newQuad(0, 0, self.image:getWidth(), self.image:getHeight(), self.image:getWidth(), self.image:getHeight())
+	local rnd = math.random(1, 100)
+	if rnd < 90 then
+		self.image = love.graphics.newImage("gfx/chair.png")
+	else
+		self.image = love.graphics.newImage("gfx/table.png")
+  end
+	self.quad = love.graphics.newQuad(0, 0, self.image:getWidth(), self.image:getHeight(), self.image:getWidth(), self.image:getHeight())
   self.width = self.image:getWidth()
   self.height = self.image:getHeight()
 end
