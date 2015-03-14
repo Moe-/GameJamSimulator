@@ -7,13 +7,15 @@ class "World" {
   height = 0;
   challengeCount = 10;
   challengeTime = 5;
+  offsetx = 0;
+  offsety = 0;
 }
 
 function World:__init(width, height)
   self.width = width
   self.height = height
-  self.background = Background:new()
-  self.player = Player:new(200, 200)
+  self.background = Background:new(width, height)
+  self.player = Player:new(200, 200, width, height)
   self.challenges = {}
   self.nextChallenge = nil
   self.curChallengeTime = 0
@@ -42,6 +44,18 @@ function World:update(dt)
         self.curChallengeTime = self.challengeTime
       end
     end
+    
+    if px + self.offsetx < 200 then
+      self.offsetx = self.offsetx + 1
+    elseif px + self.offsetx < self.width then 
+      self.offsetx = self.offsetx - 1 
+    end
+    
+    if py + self.offsety < 200 then
+      self.offsety = self.offsety + 1
+    elseif py + self.offsety < self.height then 
+      self.offsety = self.offsety - 1 
+    end
   else
 	leaveChallange = self.challenges[self.nextChallenge]:updateBattle(dt)
 	
@@ -54,11 +68,11 @@ end
 
 function World:draw()
   if self.nextChallenge == nil then
-    self.background:draw()
-    self.player:draw()
+    self.background:draw(self.offsetx, self.offsety)
+    self.player:draw(self.offsetx, self.offsety)
     
     for i, v in pairs(self.challenges) do
-      v:draw()
+      v:draw(self.offsetx, self.offsety)
     end
   else
     self.challenges[self.nextChallenge]:drawBattle()
