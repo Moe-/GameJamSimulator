@@ -29,7 +29,7 @@ function Player:update(dt)
 end
 
 function Player:draw()
-  love.graphics.draw(self.image, self.quad, self.posx, self.posy)
+  love.graphics.draw(self.image, self.quad, self.posx - self.width / 2, self.posy - self.height / 2)
 end
 
 function Player:keypressed(key)
@@ -81,4 +81,8 @@ function Player:keyreleased(key)
       self.dx = -1
     end
   end
+end
+
+function Player:getPosition()
+  return self.posx, self.posy
 end

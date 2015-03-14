@@ -6,6 +6,7 @@ class "World" {
   width = 0;
   height = 0;
   challengeCount = 10;
+  challengeTime = 5;
 }
 
 function World:__init(width, height)
@@ -14,6 +15,8 @@ function World:__init(width, height)
   self.background = Background:new()
   self.player = Player:new(200, 200)
   self.challenges = {}
+  self.nextChallenge = nil
+  self.curChallengeTime = 0
   for i = 1, self.challengeCount do
     self:genChallenge()
   end
@@ -26,20 +29,38 @@ function World:genChallenge()
 end
 
 function World:update(dt)
-  self.background:update(dt)
-  self.player:update(dt)
-  
-  for i, v in pairs(self.challenges) do
-    v:update(dt)
+  if self.nextChallenge == nil then
+    self.background:update(dt)
+    self.player:update(dt)
+    
+    local px, py = self.player:getPosition()
+    for i, v in pairs(self.challenges) do
+      v:update(dt)
+      local cx, cy = v:getPosition()
+      if getDistance(px, py, cx, cy) < 16 then
+        self.nextChallenge = i
+        self.curChallengeTime = self.challengeTime
+      end
+    end
+  else
+    self.curChallengeTime = self.curChallengeTime - dt
+    if self.curChallengeTime <= 0 then
+      table.remove(self.challenges, self.nextChallenge)
+      self.nextChallenge = nil
+    end
   end
 end
 
 function World:draw()
-  self.background:draw()
-  self.player:draw()
-  
-  for i, v in pairs(self.challenges) do
-    v:draw()
+  if self.nextChallenge == nil then
+    self.background:draw()
+    self.player:draw()
+    
+    for i, v in pairs(self.challenges) do
+      v:draw()
+    end
+  else
+    love.graphics.print("Challenge!!!", 200, 200)
   end
 end
 

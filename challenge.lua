@@ -17,5 +17,9 @@ function Challenge:update(dt)
 end
 
 function Challenge:draw()
-  love.graphics.draw(self.image, self.quad, self.posx, self.posy)
+  love.graphics.draw(self.image, self.quad, self.posx - self.width / 2, self.posy - self.height / 2)
+end
+
+function Challenge:getPosition()
+  return self.posx, self.posy
 end
