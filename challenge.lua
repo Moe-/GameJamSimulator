@@ -34,11 +34,11 @@ function Challenge:__init(posx, posy)
 	self.player[2] = {}
 	self.player[2].x = 300
 	self.player[2].y = 150
-	self.player[2].image = love.graphics.newImage("gfx/marckus.png")
+	self.player[2].image = love.graphics.newImage("gfx/alex.png")
 	self.player[3] = {}
 	self.player[3].x = 300
 	self.player[3].y = 200
-	self.player[3].image = love.graphics.newImage("gfx/marckus.png")
+	self.player[3].image = love.graphics.newImage("gfx/tomochan.png")
 	self.active = true
 end
 
