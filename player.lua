@@ -16,6 +16,7 @@ function Player:__init(posx, posy, mapWidth, mapHeight)
   --self.image = love.graphics.newImage("gfx/player.png")
 	self.image = love.graphics.newImage("gfx/marckus.png")
 	self.image2 = love.graphics.newImage("gfx/alex.png")
+	self.image3 = love.graphics.newImage("gfx/tomochan.png")
 	self.curImg = self.image
   self.quad = love.graphics.newQuad(0, 0, self.image:getWidth(), self.image:getHeight(), self.image:getWidth(), self.image:getHeight())
   self.width = self.image:getWidth()
@@ -110,6 +111,8 @@ function Player:keyreleased(key)
 	if key == 'e' then
 		if self.curImg == self.image then
 			self.curImg = self.image2
+		elseif self.curImg == self.image2 then
+			self.curImg = self.image3
 		else
 			self.curImg = self.image
 		end
