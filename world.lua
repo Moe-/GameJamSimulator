@@ -13,7 +13,7 @@ class "World" {
   offsety = 0;
 	timeLimit = 15 * 60;
 	timeLeft = 0;
-	timeToSpawnNewChallenge = 15;
+	timeToSpawnNewChallenge = 60;
 	timeToSpwanNextChallenge = 0;
 }
 
