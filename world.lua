@@ -9,6 +9,8 @@ class "World" {
   challengeTime = 5;
   offsetx = 0;
   offsety = 0;
+	timeLimit = 15 * 60;
+	timeLeft = 0;
 }
 
 function World:__init(width, height)
@@ -19,6 +21,8 @@ function World:__init(width, height)
   self.challenges = {}
   self.nextChallenge = nil
   self.curChallengeTime = 0
+	self.timeLeft = self.timeLimit
+	self.gameLost = false
   for i = 1, self.challengeCount do
     self:genChallenge()
   end
@@ -45,16 +49,16 @@ function World:update(dt)
       end
     end
     
-    if px + self.offsetx < 200 then
-      self.offsetx = self.offsetx + 1
-    elseif px + self.offsetx < self.width then 
-      self.offsetx = self.offsetx - 1 
+    if px + self.offsetx < 100 then
+      self.offsetx = self.offsetx + 1.25 * gScale
+    elseif px + self.offsetx > gScreenWidth / gScale - 100 then 
+      self.offsetx = self.offsetx - 1.25 * gScale
     end
     
-    if py + self.offsety < 200 then
-      self.offsety = self.offsety + 1
-    elseif py + self.offsety < self.height then 
-      self.offsety = self.offsety - 1 
+    if py + self.offsety < 100 then
+      self.offsety = self.offsety + 1.25 * gScale
+    elseif py + self.offsety > gScreenHeight / gScale - 100 then 
+      self.offsety = self.offsety - 1.25 * gScale 
     end
   else
 	leaveChallange = self.challenges[self.nextChallenge]:updateBattle(dt)
@@ -64,23 +68,51 @@ function World:update(dt)
       self.nextChallenge = nil
 	end
   end
+	
+	self.timeLeft = self.timeLeft - dt
+	if self.timeLeft <= 0 then
+		self.gameLost = true
+	end
+	
 end
 
 function World:draw()
   if self.nextChallenge == nil then
+		--love.graphics.push()
+		--love.graphics.scale(2.0, 2.0)
     self.background:draw(self.offsetx, self.offsety)
     self.player:draw(self.offsetx, self.offsety)
     
     for i, v in pairs(self.challenges) do
       v:draw(self.offsetx, self.offsety)
     end
+		--love.graphics.pop()
   else
     self.challenges[self.nextChallenge]:drawBattle()
   end
+	
+	if self.gameLost == true then
+		local outStr = "You failed creating a game!"
+		love.graphics.setColor(0, 0, 0, 255)
+		love.graphics.print(outStr, gScreenWidth/8 + 2, gScreenHeight/3 + 2, 0, 3.5)
+		love.graphics.setColor(255, 0, 0, 255)
+		love.graphics.print(outStr, gScreenWidth/8, gScreenHeight/3, 0, 3.5)
+		love.graphics.setColor(255, 255, 255, 255)
+	else
+		local outStr = "Seconds left: " .. round(self.timeLeft, 0)
+		love.graphics.setColor(0, 0, 0, 255)
+		love.graphics.print(outStr, 27, 27, 0, 2.5)
+		love.graphics.setColor(255, 255, 0, 255)
+		love.graphics.print(outStr, 25, 25, 0, 2.5)
+		love.graphics.setColor(255, 255, 255, 255)
+	end
 end
 
 function World:keypressed(key)
-  self.player:keypressed(key)
+	self.player:keypressed(key)
+	if self.nextChallenge ~= nil then
+		self.challenges[self.nextChallenge]:keypressed(key)
+	end
 end
 
 function World:keyreleased(key)
