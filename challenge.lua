@@ -2,8 +2,9 @@ class "Challenge" {
 	posx = 0;
 	posy = 0;
 	energy = 20;
-	nextPlayer = 0;
+	w = 0;
 	fightIndex = 0;
+	nextPlayer = 0;
 }
 
 function Challenge:__init(posx, posy)
@@ -46,7 +47,7 @@ function Challenge:__init(posx, posy)
 end
 
 function Challenge:update(dt)
-  
+
 end
 
 function Challenge:draw(offsetx, offsety)
@@ -61,6 +62,9 @@ function Challenge:draw(offsetx, offsety)
 end
 
 function Challenge:updateBattle(dt)
+	if self.energy <= 0 then
+		self.active = false
+	end
 	return not self.active
 end
 
@@ -68,7 +72,10 @@ function Challenge:drawBattle()
 	love.graphics.print("Fight!!!", 200, 20)
 	
 	--background
+	love.graphics.push()
+	love.graphics.scale(1/gScale, 1/gScale)
 	love.graphics.draw(self.bg, 0, 0)
+	love.graphics.pop()
 	
 	--menu
 	love.graphics.draw(self.menu, 0, 300 - 64)
@@ -84,13 +91,22 @@ function Challenge:drawBattle()
 	local py = 150 - 12
 	love.graphics.setColor(0, 0, 0, 255)
 	love.graphics.print(self.desc, px + 1, py + 1, 0, 1.25)
+	love.graphics.print("HP " .. self.energy, 31, 121, 0, 1.25)
 	love.graphics.setColor(128, 128, 255, 255)
 	love.graphics.print(self.desc, px, py, 0, 1.25)
-	love.graphics.print("LP " .. self.energy, 30, 120, 0, 1.25)
+	love.graphics.print("HP " .. self.energy, 30, 120, 0, 1.25)
 	love.graphics.setColor(255, 255, 255, 255)
 
 	--draw menu
 	love.graphics.print("Fight!!!", 200, 20)
+	
+	if self.nextPlayer == 0 then 
+		love.graphics.print("Coder", 20, 260)
+	elseif self.nextPlayer == 1 then 
+		love.graphics.print("Designer", 20, 260)
+	else
+		love.graphics.print("Artist", 20, 260)
+	end
 	
 	if self.fightIndex == 0 then
 		love.graphics.setColor(128, 128, 255, 255)
@@ -135,5 +151,110 @@ function Challenge:keyreleased(key)
 		self.fightIndex = self.fightIndex + 1
 		if self.fightIndex > 2 then self.fightIndex = 0 end
 	elseif key == "return" then
+		if self.fightIndex == 0 then -- attack
+			if self.desc == "Merge conflict!" then
+				if self.nextPlayer == 0 then -- progger
+					self.energy = self.energy - 3
+				elseif self.nextPlayer == 1 then -- designer
+					self.energy = self.energy + 3
+				else -- gfx guy
+					self.energy = self.energy
+				end
+			elseif self.desc == "Application crash!" then
+				if self.nextPlayer == 0 then -- progger
+					self.energy = self.energy - 3
+				elseif self.nextPlayer == 1 then -- designer
+					self.energy = self.energy + 3
+				else -- gfx guy
+					self.energy = self.energy
+				end
+			elseif self.desc == "Non-transparent background!" then
+				if self.nextPlayer == 0 then -- progger
+					self.energy = self.energy
+				elseif self.nextPlayer == 1 then -- designer
+					self.energy = self.energy + 3
+				else -- gfx guy
+					self.energy = self.energy -3
+				end
+			elseif self.desc == "Unlogical gameplay!" then
+				if self.nextPlayer == 0 then -- progger
+					self.energy = self.energy
+				elseif self.nextPlayer == 1 then -- designer
+					self.energy = self.energy - 3
+				else -- gfx guy
+					self.energy = self.energy
+				end
+			elseif self.desc == "Untriggered quest!" then
+				if self.nextPlayer == 0 then -- progger
+					self.energy = self.energy - 3
+				elseif self.nextPlayer == 1 then -- designer
+					self.energy = self.energy - 3
+				else -- gfx guy
+					self.energy = self.energy + 3
+				end
+			elseif self.desc == "Inverted colors!" then
+				if self.nextPlayer == 0 then -- progger
+					self.energy = self.energy - 1
+				elseif self.nextPlayer == 1 then -- designer
+					self.energy = self.energy + 3
+				else -- gfx guy
+					self.energy = self.energy - 3
+				end
+			end
+		elseif self.fightIndex == 1 then -- magic
+			if self.desc == "Merge conflict!" then
+				if self.nextPlayer == 0 then -- progger
+					self.energy = self.energy - 5
+				elseif self.nextPlayer == 1 then -- designer
+					self.energy = self.energy + 5
+				else -- gfx guy
+					self.energy = self.energy
+				end
+			elseif self.desc == "Application crash!" then
+				if self.nextPlayer == 0 then -- progger
+					self.energy = self.energy - 5
+				elseif self.nextPlayer == 1 then -- designer
+					self.energy = self.energy + 5
+				else -- gfx guy
+					self.energy = self.energy
+				end
+			elseif self.desc == "Non-transparent background!" then
+				if self.nextPlayer == 0 then -- progger
+					self.energy = self.energy
+				elseif self.nextPlayer == 1 then -- designer
+					self.energy = self.energy + 5
+				else -- gfx guy
+					self.energy = self.energy - 5
+				end
+			elseif self.desc == "Unlogical gameplay!" then
+				if self.nextPlayer == 0 then -- progger
+					self.energy = self.energy
+				elseif self.nextPlayer == 1 then -- designer
+					self.energy = self.energy - 5
+				else -- gfx guy
+					self.energy = self.energy
+				end
+			elseif self.desc == "Untriggered quest!" then
+				if self.nextPlayer == 0 then -- progger
+					self.energy = self.energy - 5
+				elseif self.nextPlayer == 1 then -- designer
+					self.energy = self.energy - 5
+				else -- gfx guy
+					self.energy = self.energy + 5
+				end
+			elseif self.desc == "Inverted colors!" then
+				if self.nextPlayer == 0 then -- progger
+					self.energy = self.energy - 2
+				elseif self.nextPlayer == 1 then -- designer
+					self.energy = self.energy + 5
+				else -- gfx guy
+					self.energy = self.energy - 5
+				end
+			end
+		else -- skip
+		
+		end
+		self.nextPlayer = self.nextPlayer + 1
+		if self.nextPlayer > 2 then self.nextPlayer = 0 end
 	end
 end
