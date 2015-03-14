@@ -47,13 +47,13 @@ function World:update(dt)
     
     if px + self.offsetx < 200 then
       self.offsetx = self.offsetx + 1
-    elseif px + self.offsetx < self.width then 
+    elseif px + self.offsetx > gScreenWidth - 200 then 
       self.offsetx = self.offsetx - 1 
     end
     
     if py + self.offsety < 200 then
       self.offsety = self.offsety + 1
-    elseif py + self.offsety < self.height then 
+    elseif py + self.offsety > gScreenHeight - 200 then 
       self.offsety = self.offsety - 1 
     end
   else
@@ -68,12 +68,15 @@ end
 
 function World:draw()
   if self.nextChallenge == nil then
+		--love.graphics.push()
+		--love.graphics.scale(2.0, 2.0)
     self.background:draw(self.offsetx, self.offsety)
     self.player:draw(self.offsetx, self.offsety)
     
     for i, v in pairs(self.challenges) do
       v:draw(self.offsetx, self.offsety)
     end
+		--love.graphics.pop()
   else
     self.challenges[self.nextChallenge]:drawBattle()
   end
