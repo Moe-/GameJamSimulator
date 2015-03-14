@@ -49,6 +49,10 @@ function Challenge:getPosition()
 	return self.posx, self.posy
 end
 
+function Challenge:getSize()
+	return self.width, self.height
+end
+
 function Challenge:keypressed(key)
 	if key == "f1" then
 		self.active = false

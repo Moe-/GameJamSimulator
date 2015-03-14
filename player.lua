@@ -20,21 +20,30 @@ function Player:__init(posx, posy, mapWidth, mapHeight)
   self.height = self.image:getHeight()
 end
 
-function Player:update(dt)
+function Player:update(dt, objects)
   local offsetx = self.speed * self.dx * dt
   local offsety = self.speed * self.dy * dt
+	
+	local newx = self.posx + offsetx
+	local newy = self.posy + offsety
   
   local playerBlocked = false
-	if self.posx + offsetx < 0 or self.posx + offsetx > self.mapWidth then
+	if newx < 0 or newx > self.mapWidth then
 		playerBlocked = true
 	end
-	if self.posy + offsety < 0 or self.posy + offsety > self.mapHeight then
+	if newy < 0 or newy > self.mapHeight then
 		playerBlocked = true
 	end
+	
+	for i, v in pairs(objects) do
+			if v:checkCollision(newx, newy) then
+				playerBlocked = true
+			end
+		end
 
   if not playerBlocked then
-    self.posx = self.posx + offsetx
-    self.posy = self.posy + offsety
+    self.posx = newx
+    self.posy = newy
   end
 end
 
@@ -99,4 +108,8 @@ end
 
 function Player:getPosition()
   return self.posx, self.posy
+end
+
+function Player:getSize()
+	return self.width, self.height
 end

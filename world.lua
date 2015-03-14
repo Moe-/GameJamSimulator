@@ -1,11 +1,13 @@
 require('background')
 require('player')
 require('challenge')
+require('object')
 
 class "World" {
   width = 0;
   height = 0;
   challengeCount = 10;
+	objectCount = 30;
   challengeTime = 5;
   offsetx = 0;
   offsety = 0;
@@ -19,6 +21,7 @@ function World:__init(width, height)
   self.background = Background:new(width, height)
   self.player = Player:new(200, 200, width, height)
   self.challenges = {}
+	self.objects = {}
   self.nextChallenge = nil
   self.curChallengeTime = 0
 	self.timeLeft = self.timeLimit
@@ -26,18 +29,51 @@ function World:__init(width, height)
   for i = 1, self.challengeCount do
     self:genChallenge()
   end
+	
+	for i = 1, self.objectCount do
+    self:genObject()
+  end
+end
+
+function World:positionTakenByList(x, y, list)
+	for i, v in pairs(list) do
+		local cx, cy = v:getPosition()
+		local cw, ch = v:getSize()
+		if getDistance(x, y, cx, cy) < 2 * math.max(cw, ch) then
+			return true
+		end
+	end
+	return false
+end
+
+function World:positionTaken(x, y)
+	return (self:positionTakenByList(x, y, self.objects) or self:positionTakenByList(x, y, self.challenges))
+end
+
+function World:getUniquePosition()
+	local x
+	local y
+	repeat
+		x = math.random(1, self.width)
+		y = math.random(1, self.height)
+	until not self:positionTaken(x, y)
+	return x, y
 end
 
 function World:genChallenge()
-  local x = math.random(1, self.width)
-  local y = math.random(1, self.height)
+  local x, y = self:getUniquePosition()
   table.insert(self.challenges, Challenge:new(x, y))
+end
+
+function World:genObject()
+  local x, y = self:getUniquePosition()
+  table.insert(self.objects, Object:new(x, y))
 end
 
 function World:update(dt)
   if self.nextChallenge == nil then
     self.background:update(dt)
-    self.player:update(dt)
+    self.player:update(dt, self.objects)
     
     local px, py = self.player:getPosition()
     for i, v in pairs(self.challenges) do
@@ -48,6 +84,10 @@ function World:update(dt)
         self.curChallengeTime = self.challengeTime
       end
     end
+		
+		for i, v in pairs(self.objects) do
+			v:update(dt)
+		end
     
     if px + self.offsetx < 100 then
       self.offsetx = self.offsetx + 1.25 * gScale
@@ -86,6 +126,10 @@ function World:draw()
     for i, v in pairs(self.challenges) do
       v:draw(self.offsetx, self.offsety)
     end
+		
+		for i, v in pairs(self.objects) do
+			v:draw(self.offsetx, self.offsety)
+		end
 		--love.graphics.pop()
   else
     self.challenges[self.nextChallenge]:drawBattle()
