@@ -4,6 +4,11 @@ require('world')
 gWorld = nil
 
 function love.load()
+  if arg[#arg] == "-debug" then 
+    require("mobdebug").start() 
+	end
+	math.randomseed( os.time() )
+  
   resetGame()
 end
 
