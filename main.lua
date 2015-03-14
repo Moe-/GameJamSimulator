@@ -2,17 +2,14 @@ require('utils')
 require('world')
 
 gWorld = nil
-gScreenWidth = 0
-gScreenHeight = 0
 
 function love.load()
-  if arg[#arg] == "-debug" then 
-    require("mobdebug").start() 
+	if arg[#arg] == "-debug" then 
+		require("mobdebug").start() 
 	end
-	math.randomseed(os.time())
-	gScreenWidth, gScreenHeight = love.graphics.getDimensions( )
-  
-  resetGame()
+	love.graphics.setDefaultFilter("nearest", "nearest", 0)
+	math.randomseed( os.time() )
+	resetGame()
 end
 
 function love.update(dt)
@@ -20,7 +17,9 @@ function love.update(dt)
 end
 
 function love.draw()
-  gWorld:draw()
+	--love.graphics.pop()
+	love.graphics.scale(2, 2)
+	gWorld:draw()
 end
 
 function resetGame()
