@@ -4,12 +4,12 @@ require('world')
 gWorld = nil
 
 function love.load()
-  if arg[#arg] == "-debug" then 
-    require("mobdebug").start() 
+	if arg[#arg] == "-debug" then 
+		require("mobdebug").start() 
 	end
+	love.graphics.setDefaultFilter("nearest", "nearest", 0)
 	math.randomseed( os.time() )
-  
-  resetGame()
+	resetGame()
 end
 
 function love.update(dt)
@@ -17,7 +17,9 @@ function love.update(dt)
 end
 
 function love.draw()
-  gWorld:draw()
+	--love.graphics.pop()
+	love.graphics.scale(2, 2)
+	gWorld:draw()
 end
 
 function resetGame()

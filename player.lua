@@ -3,7 +3,7 @@ class "Player" {
   posy = 0;
   dx = 0;
   dy = 0;
-  speed = 25;
+  speed = 125;
 }
 
 function Player:__init(posx, posy)

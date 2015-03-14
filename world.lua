@@ -66,7 +66,10 @@ function World:draw()
 end
 
 function World:keypressed(key)
-  self.player:keypressed(key)
+	self.player:keypressed(key)
+	if self.nextChallenge ~= nil then
+		self.challenges[self.nextChallenge]:keypressed(key)
+	end
 end
 
 function World:keyreleased(key)
