@@ -74,6 +74,16 @@ function Challenge:drawBattle()
 	for i = 1, 3 do
 		love.graphics.draw(self.player[i].image, self.player[i].x, self.player[i].y)
 	end
+	
+	-- draw enemy
+	love.graphics.draw(self.image, self.quad, 30 - self.width / 2, 150 - self.height / 2)
+	local px = 30 + self.width / 2 - 8
+	local py = 150 - 12
+	love.graphics.setColor(0, 0, 0, 255)
+	love.graphics.print(self.desc, px + 1, py + 1, 0, 1.25)
+	love.graphics.setColor(128, 128, 255, 255)
+	love.graphics.print(self.desc, px, py, 0, 1.25)
+	love.graphics.setColor(255, 255, 255, 255)
 
 	--draw menu
 	love.graphics.print("Fight!!!", 200, 20)
