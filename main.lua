@@ -2,12 +2,15 @@ require('utils')
 require('world')
 
 gWorld = nil
+gScreenWidth = 0
+gScreenHeight = 0
 
 function love.load()
   if arg[#arg] == "-debug" then 
     require("mobdebug").start() 
 	end
-	math.randomseed( os.time() )
+	math.randomseed(os.time())
+	gScreenWidth, gScreenHeight = love.graphics.getDimensions( )
   
   resetGame()
 end

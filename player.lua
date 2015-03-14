@@ -38,7 +38,11 @@ function Player:update(dt)
 end
 
 function Player:draw(offsetx, offsety)
-  love.graphics.draw(self.image, self.quad, self.posx - self.width / 2 + offsetx, self.posy - self.height / 2 + offsety)
+	if self.dx > 0 then 
+		love.graphics.draw(self.image, self.quad, self.posx + self.width / 2 + offsetx, self.posy - self.height / 2 + offsety, 0, -1, 1)
+	else
+		love.graphics.draw(self.image, self.quad, self.posx - self.width / 2 + offsetx, self.posy - self.height / 2 + offsety, 0, 1, 1)
+	end
 end
 
 function Player:keypressed(key)
