@@ -9,8 +9,19 @@ function Object:__init(posx, posy)
 	local rnd = math.random(1, 100)
 	if rnd < 90 then
 		self.image = love.graphics.newImage("gfx/chair.png")
+		if rnd < 45 then
+			self.mirror = true
+		else
+			self.mirror = false
+		end
 	else
-		self.image = love.graphics.newImage("gfx/table.png")
+		if rnd < 95 then
+			self.image = love.graphics.newImage("gfx/table.png")
+		else
+			self.image = love.graphics.newImage("gfx/table2.png")
+		end
+		
+		self.mirror = false
   end
 	self.quad = love.graphics.newQuad(0, 0, self.image:getWidth(), self.image:getHeight(), self.image:getWidth(), self.image:getHeight())
   self.width = self.image:getWidth()
@@ -22,7 +33,11 @@ function Object:update(dt)
 end
 
 function Object:draw(offsetx, offsety)
-  love.graphics.draw(self.image, self.quad, self.posx - self.width / 2  + offsetx, self.posy - self.height / 2 + offsety)
+	if self.mirror then
+		love.graphics.draw(self.image, self.quad, self.posx - self.width / 2  + offsetx, self.posy - self.height / 2 + offsety, 0, -1, 1)
+	else
+		love.graphics.draw(self.image, self.quad, self.posx - self.width / 2  + offsetx, self.posy - self.height / 2 + offsety)
+	end
 end
 
 function Object:getPosition()

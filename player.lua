@@ -50,7 +50,7 @@ function Player:update(dt, objects)
 end
 
 function Player:draw(offsetx, offsety)
-	if self.dx > 0 then 
+	if self.dx >= 0 then 
 		love.graphics.draw(self.curImg, self.quad, self.posx + self.width / 2 + offsetx, self.posy - self.height / 2 + offsety, 0, -1, 1)
 	else
 		love.graphics.draw(self.curImg, self.quad, self.posx - self.width / 2 + offsetx, self.posy - self.height / 2 + offsety, 0, 1, 1)
