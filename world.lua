@@ -7,6 +7,8 @@ class "World" {
   height = 0;
   challengeCount = 10;
   challengeTime = 5;
+  offsetx = 0;
+  offsety = 0;
 }
 
 function World:__init(width, height)
@@ -42,6 +44,18 @@ function World:update(dt)
         self.curChallengeTime = self.challengeTime
       end
     end
+    
+    if px + self.offsetx < 200 then
+      self.offsetx = self.offsetx + 1
+    elseif px + self.offsetx < self.width then 
+      self.offsetx = self.offsetx - 1 
+    end
+    
+    if py + self.offsety < 200 then
+      self.offsety = self.offsety + 1
+    elseif py + self.offsety < self.height then 
+      self.offsety = self.offsety - 1 
+    end
   else
     self.curChallengeTime = self.curChallengeTime - dt
     if self.curChallengeTime <= 0 then
@@ -53,11 +67,11 @@ end
 
 function World:draw()
   if self.nextChallenge == nil then
-    self.background:draw()
-    self.player:draw()
+    self.background:draw(self.offsetx, self.offsety)
+    self.player:draw(self.offsetx, self.offsety)
     
     for i, v in pairs(self.challenges) do
-      v:draw()
+      v:draw(self.offsetx, self.offsety)
     end
   else
     love.graphics.print("Challenge!!!", 200, 200)

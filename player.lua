@@ -3,7 +3,7 @@ class "Player" {
   posy = 0;
   dx = 0;
   dy = 0;
-  speed = 25;
+  speed = 75;
 }
 
 function Player:__init(posx, posy)
@@ -28,8 +28,8 @@ function Player:update(dt)
   end
 end
 
-function Player:draw()
-  love.graphics.draw(self.image, self.quad, self.posx - self.width / 2, self.posy - self.height / 2)
+function Player:draw(offsetx, offsety)
+  love.graphics.draw(self.image, self.quad, self.posx - self.width / 2 + offsetx, self.posy - self.height / 2 + offsety)
 end
 
 function Player:keypressed(key)

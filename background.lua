@@ -10,8 +10,8 @@ function Background:__init()
   self.height = self.image:getHeight()
 end
 
-function Background:draw()
-  love.graphics.draw(self.image, self.quad, 0, 0)
+function Background:draw(offsetx, offsety)
+  love.graphics.draw(self.image, self.quad, 0 + offsetx, 0 + offsety)
 end
 
 function Background:update(dt)
