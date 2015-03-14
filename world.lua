@@ -49,16 +49,16 @@ function World:update(dt)
       end
     end
     
-    if px + self.offsetx < 200 then
-      self.offsetx = self.offsetx + 1
-    elseif px + self.offsetx > gScreenWidth - 200 then 
-      self.offsetx = self.offsetx - 1 
+    if px + self.offsetx < 100 then
+      self.offsetx = self.offsetx + 1.25 * gScale
+    elseif px + self.offsetx > gScreenWidth / gScale - 100 then 
+      self.offsetx = self.offsetx - 1.25 * gScale
     end
     
-    if py + self.offsety < 200 then
-      self.offsety = self.offsety + 1
-    elseif py + self.offsety > gScreenHeight - 200 then 
-      self.offsety = self.offsety - 1 
+    if py + self.offsety < 100 then
+      self.offsety = self.offsety + 1.25 * gScale
+    elseif py + self.offsety > gScreenHeight / gScale - 100 then 
+      self.offsety = self.offsety - 1.25 * gScale 
     end
   else
 	leaveChallange = self.challenges[self.nextChallenge]:updateBattle(dt)

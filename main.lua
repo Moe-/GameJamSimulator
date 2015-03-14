@@ -5,6 +5,7 @@ gWorld = nil
 
 gScreenWidth = 0
 gScreenHeight = 0
+gScale = 2
 
 function love.load()
 	if arg[#arg] == "-debug" then 
@@ -22,7 +23,7 @@ end
 
 function love.draw()
 	--love.graphics.pop()
-	love.graphics.scale(2, 2)
+	love.graphics.scale(gScale, gScale)
 	gWorld:draw()
 end
 
