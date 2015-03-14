@@ -7,6 +7,8 @@ function Challenge:__init(posx, posy)
 	self.posx = posx
 	self.posy = posy
 	self.image = love.graphics.newImage("gfx/challenge.png")
+	self.bg = love.graphics.newImage("gfx/battle_bg1.png")
+	self.menu = love.graphics.newImage("gfx/battle_menu.png")
 	self.quad = love.graphics.newQuad(0, 0, self.image:getWidth(), self.image:getHeight(), self.image:getWidth(), self.image:getHeight())
 	self.width = self.image:getWidth()
 	self.height = self.image:getHeight()
@@ -39,10 +41,21 @@ function Challenge:updateBattle(dt)
 end
 
 function Challenge:drawBattle()
-	love.graphics.print("Challenge!!!", 200, 20)
+	love.graphics.print("Fight!!!", 200, 20)
+	
+	--background
+	love.graphics.draw(self.bg, 0, 0)
+	
+	--menu
+	love.graphics.draw(self.menu, 0, 300 - 64)
+	
+	--draw player
 	for i = 1, 3 do
 		love.graphics.draw(self.player[i].image, self.player[i].x, self.player[i].y)
 	end
+
+	--draw menu
+	love.graphics.print("Fight!!!", 200, 20)
 end
 
 function Challenge:getPosition()
