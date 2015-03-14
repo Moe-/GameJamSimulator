@@ -14,8 +14,8 @@ class "World" {
 function World:__init(width, height)
   self.width = width
   self.height = height
-  self.background = Background:new()
-  self.player = Player:new(200, 200)
+  self.background = Background:new(width, height)
+  self.player = Player:new(200, 200, width, height)
   self.challenges = {}
   self.nextChallenge = nil
   self.curChallengeTime = 0
