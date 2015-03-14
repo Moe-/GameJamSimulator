@@ -2,10 +2,10 @@ class "Background" {
 
 }
 
-function Background:__init()
+function Background:__init(width, height)
   self.image = love.graphics.newImage("gfx/background.png")
   self.image:setWrap("repeat", "repeat")
-  self.quad = love.graphics.newQuad(0, 0, 2048, 2048, self.image:getWidth(), self.image:getHeight())
+  self.quad = love.graphics.newQuad(0, 0, width, height, self.image:getWidth(), self.image:getHeight())
   self.width = self.image:getWidth()
   self.height = self.image:getHeight()
 end
