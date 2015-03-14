@@ -43,3 +43,12 @@ end
 function getLength(x, y)
   return math.sqrt(x*x + y*y)
 end
+
+function round(num, idp)
+  if idp and idp > 0 then
+    local mult = 10 ^ idp
+    return math.floor(num * mult + 0.5) / mult
+  else
+		return math.floor(num + 0.5)
+	end
+end
