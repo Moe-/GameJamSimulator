@@ -43,11 +43,12 @@ function World:update(dt)
       end
     end
   else
-    self.curChallengeTime = self.curChallengeTime - dt
-    if self.curChallengeTime <= 0 then
+	leaveChallange = self.challenges[self.nextChallenge]:updateBattle(dt)
+	
+	if leaveChallange then
       table.remove(self.challenges, self.nextChallenge)
       self.nextChallenge = nil
-    end
+	end
   end
 end
 
@@ -60,7 +61,7 @@ function World:draw()
       v:draw()
     end
   else
-    love.graphics.print("Challenge!!!", 200, 200)
+    self.challenges[self.nextChallenge]:drawBattle()
   end
 end
 
