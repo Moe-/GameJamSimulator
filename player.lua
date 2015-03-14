@@ -6,12 +6,16 @@ class "Player" {
   speed = 125;
 }
 
-function Player:__init(posx, posy)
+function Player:__init(posx, posy, mapWidth, mapHeight)
   self.posx = posx
   self.posy = posy
   self.dead = false
-  self.image = love.graphics.newImage("gfx/player.png")
-  self.quad = love.graphics.newQuad(0, 0, 2048, 2048, self.image:getWidth(), self.image:getHeight())
+	self.mapWidth = mapWidth
+	self.mapHeight = mapHeight
+
+  --self.image = love.graphics.newImage("gfx/player.png")
+	self.image = love.graphics.newImage("gfx/marckus.png")
+  self.quad = love.graphics.newQuad(0, 0, self.image:getWidth(), self.image:getHeight(), self.image:getWidth(), self.image:getHeight())
   self.width = self.image:getWidth()
   self.height = self.image:getHeight()
 end
@@ -21,15 +25,25 @@ function Player:update(dt)
   local offsety = self.speed * self.dy * dt
   
   local playerBlocked = false
-  
+	if self.posx + offsetx < 0 or self.posx + offsetx > self.mapWidth then
+		playerBlocked = true
+	end
+	if self.posy + offsety < 0 or self.posy + offsety > self.mapHeight then
+		playerBlocked = true
+	end
+
   if not playerBlocked then
     self.posx = self.posx + offsetx
     self.posy = self.posy + offsety
   end
 end
 
-function Player:draw()
-  love.graphics.draw(self.image, self.quad, self.posx - self.width / 2, self.posy - self.height / 2)
+function Player:draw(offsetx, offsety)
+	if self.dx > 0 then 
+		love.graphics.draw(self.image, self.quad, self.posx + self.width / 2 + offsetx, self.posy - self.height / 2 + offsety, 0, -1, 1)
+	else
+		love.graphics.draw(self.image, self.quad, self.posx - self.width / 2 + offsetx, self.posy - self.height / 2 + offsety, 0, 1, 1)
+	end
 end
 
 function Player:keypressed(key)
